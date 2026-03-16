@@ -208,4 +208,4 @@ python main.py
 ---
 
 ## Links
-Landing page - https:/kobo.vercel.app
+Landing page - [Click Here](https://kobo-ai.vercel.app/#)
