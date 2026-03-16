@@ -189,16 +189,23 @@ Tracks formal and informal obligations.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/kobo.git
+git clone https://github.com/AdemiluaAdeola/kobo-backend.git
 
 # Navigate to project directory
 cd kobo
 
-# Install dependencies
-npm install
+# Set up environment variables( this is for linux users, kindly check for windows and mac)
+python3 -m venv venv
+source venv/bin/activate
 
-# Set up environment variables
-cp .env.example .env
+# Install dependencies( this is for linux users, kindly check for windows and mac)
+pip install -r requirements.txt
 
 # Run development server
-npm run dev
+python main.py
+```
+
+---
+
+## Links
+Landing page - https:/kobo.vercel.app
