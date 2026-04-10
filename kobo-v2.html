@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kobo — Your Money, Smarter.</title>
+  <meta name="description" content="AI financial coach for young Nigerian professionals. Predict your balance 14 days ahead. Never be broke before payday again."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --void: #080c0a;
+      --deep: #0d1410;
+      --surface: #111a13;
+      --elevated: #182019;
+      --border: #1f2d21;
+      --border-hi: #2a3d2c;
+      --kola: #c8521a;
+      --kola-soft: #e8845a;
+      --kola-pale: #f2b08a;
+      --aso: #b8922a;
+      --aso-soft: #d4b060;
+      --naira: #2a6b35;
+      --naira-hi: #3d8f4a;
+      --naira-glow: #5caa6a;
+      --naira-pale: #a8d8ae;
+      --t1: #f0ede8;
+      --t2: #b8b4ac;
+      --t3: #7a7670;
+      --t4: #4a4740;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;font-size:16px;}
+    body{font-family:'DM Sans',sans-serif;background:var(--void);color:var(--t1);overflow-x:hidden;line-height:1.6;}
+
+    /* Adire geometric overlay */
+    .adire-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(168,216,174,0.022) 40px),
+        repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(168,216,174,0.022) 40px),
+        repeating-linear-gradient(45deg,transparent,transparent 19px,rgba(200,82,26,0.01) 20px),
+        repeating-linear-gradient(-45deg,transparent,transparent 19px,rgba(200,82,26,0.01) 20px);}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+    nav.solid{background:rgba(8,12,10,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+    .logo-group{display:flex;align-items:center;gap:.75rem;text-decoration:none;}
+    .logo-emblem{width:40px;height:40px;border:1.5px solid var(--border-hi);border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .logo-emblem::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(200,82,26,0.12) 50%,transparent 70%),linear-gradient(-45deg,transparent 30%,rgba(42,107,53,0.08) 50%,transparent 70%);}
+    .logo-naira{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--naira-pale);position:relative;z-index:1;letter-spacing:-1px;}
+    .logo-wordmark{font-family:'Syne',sans-serif;font-weight:700;font-size:1.25rem;color:var(--t1);letter-spacing:-.02em;}
+    .nav-center{display:flex;gap:3rem;align-items:center;}
+    .nav-center a{color:var(--t3);text-decoration:none;font-size:.85rem;font-weight:500;letter-spacing:.01em;transition:color .2s;}
+    .nav-center a:hover{color:var(--t1);}
+    .nav-right{display:flex;gap:1rem;align-items:center;}
+    .btn-ghost{color:var(--t2);font-size:.85rem;font-weight:500;text-decoration:none;padding:.6rem 1.1rem;border:1px solid var(--border-hi);border-radius:8px;transition:all .2s;font-family:'DM Sans',sans-serif;}
+    .btn-ghost:hover{color:var(--t1);border-color:var(--naira-hi);}
+    .btn-kola{background:var(--kola);color:#fff;font-size:.85rem;font-weight:600;text-decoration:none;padding:.65rem 1.4rem;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:.4rem;}
+    .btn-kola:hover{background:#b84515;transform:translateY(-1px);}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;align-items:center;padding:9rem 4rem 6rem;position:relative;z-index:1;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 65% 50%,rgba(42,107,53,0.08) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 25% 60%,rgba(200,82,26,0.05) 0%,transparent 60%);pointer-events:none;}
+    .hero-inner{max-width:1320px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;position:relative;z-index:1;}
+
+    .hero-tag{display:inline-flex;align-items:center;gap:.6rem;padding:.35rem .9rem .35rem .5rem;border:1px solid var(--border-hi);border-radius:100px;font-size:.73rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2.25rem;}
+    .tag-dot{width:18px;height:18px;background:var(--naira);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--naira-pale);}
+
+    h1{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,5.5vw,5.4rem);font-weight:900;line-height:1.0;letter-spacing:-.035em;color:var(--t1);margin-bottom:1.75rem;}
+    h1 .accent-line{display:block;color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.28);font-style:italic;font-weight:400;}
+    h1 .kola-word{color:var(--kola);font-style:italic;}
+    h1 .naira-word{position:relative;display:inline-block;}
+    h1 .naira-word::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--naira-hi),transparent);}
+
+    .hero-sub{font-size:1.05rem;font-weight:300;color:var(--t2);line-height:1.75;max-width:460px;margin-bottom:2.75rem;}
+    .hero-sub strong{color:var(--t1);font-weight:500;}
+    .hero-ctas{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:3.5rem;}
+    .btn-primary-hero{background:var(--kola);color:#fff;padding:1rem 2rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;transition:background .2s,transform .2s;}
+    .btn-primary-hero:hover{background:#b84515;transform:translateY(-2px);}
+    .btn-link-hero{color:var(--t2);font-size:.9rem;font-weight:400;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;padding-bottom:1px;border-bottom:1px solid var(--border-hi);transition:color .2s,border-color .2s;}
+    .btn-link-hero:hover{color:var(--t1);border-color:var(--t3);}
+
+    .hero-proof{display:flex;align-items:center;gap:1.5rem;padding-top:2rem;border-top:1px solid var(--border);}
+    .proof-faces{display:flex;}
+    .face{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--void);margin-left:-7px;font-size:.7rem;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:'Syne',sans-serif;}
+    .face:first-child{margin-left:0;}
+    .f1{background:#3d5c25;color:#a8cc80;}.f2{background:#6b3520;color:#f0b088;}.f3{background:#1a3a60;color:#90b8e0;}.f4{background:#5a3a10;color:#d4a850;}.f5{background:#2a4a2c;color:#88c890;}
+    .proof-text{font-size:.8rem;color:var(--t3);line-height:1.4;}
+    .proof-text strong{color:var(--t2);display:block;font-weight:500;}
+
+    /* Phone */
+    .hero-visual{position:relative;display:flex;justify-content:center;align-items:center;}
+    .phone-scene{position:relative;width:300px;animation:sceneFloat 7s ease-in-out infinite;}
+    @keyframes sceneFloat{0%,100%{transform:translateY(0) rotate(.3deg);}50%{transform:translateY(-14px) rotate(-.3deg);}}
+    .phone-shell{width:300px;background:var(--surface);border:1px solid var(--border-hi);border-radius:44px;padding:14px;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 60px 120px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);}
+    .phone-face{background:var(--void);border-radius:32px;overflow:hidden;}
+    .ph-pill{height:30px;display:flex;align-items:center;justify-content:center;}
+    .ph-pill-bar{width:90px;height:5px;background:var(--border-hi);border-radius:3px;}
+    .ph-body{padding:1.1rem 1rem 1.5rem;}
+    .ph-greeting{font-size:.65rem;color:var(--t4);font-weight:500;margin-bottom:.15rem;}
+    .ph-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:1.1rem;}
+    .ph-balance-card{background:linear-gradient(135deg,var(--naira) 0%,#1a4a20 100%);border-radius:16px;padding:1rem 1.1rem;margin-bottom:.9rem;position:relative;overflow:hidden;}
+    .ph-balance-card::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,.04);border-radius:50%;}
+    .ph-bal-label{font-size:.58rem;color:rgba(168,216,174,.65);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.2rem;}
+    .ph-bal-amount{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--naira-pale);letter-spacing:-.04em;line-height:1;}
+    .ph-bal-sub{font-size:.6rem;color:rgba(168,216,174,.7);margin-top:.35rem;}
+    .ph-bal-sub span{color:var(--naira-pale);font-weight:600;}
+    .ph-forecast{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:.7rem .85rem;margin-bottom:.7rem;}
+    .ph-fc-row{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;margin-bottom:.35rem;}
+    .ph-fc-label{color:var(--t4);}
+    .ph-fc-val{color:var(--t2);font-weight:500;}
+    .ph-bar-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .ph-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--naira-hi),var(--naira-glow));}
+    .ph-nudge{background:rgba(200,82,26,.1);border:1px solid rgba(200,82,26,.2);border-radius:10px;padding:.6rem .75rem;font-size:.6rem;color:var(--kola-pale);line-height:1.5;margin-bottom:.7rem;display:flex;gap:.4rem;align-items:flex-start;}
+    .nudge-dot{color:var(--kola);flex-shrink:0;margin-top:1px;}
+    .ph-chat-row{display:flex;flex-direction:column;gap:.5rem;}
+    .ph-msg{font-size:.62rem;line-height:1.5;padding:.55rem .7rem;border-radius:10px;max-width:85%;}
+    .ph-msg.bot{background:var(--elevated);color:var(--t2);border-radius:3px 10px 10px 10px;align-self:flex-start;}
+    .ph-msg.user{background:var(--naira);color:var(--naira-pale);border-radius:10px 3px 10px 10px;align-self:flex-end;}
+
+    /* Floating cards */
+    .f-card{position:absolute;background:var(--elevated);border:1px solid var(--border-hi);border-radius:14px;padding:.9rem 1.1rem;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+    .fc1{top:-10px;right:-110px;width:170px;animation:fc1f 6s ease-in-out infinite;}
+    .fc2{bottom:60px;left:-120px;width:165px;animation:fc2f 8s ease-in-out infinite 1s;}
+    @keyframes fc1f{0%,100%{transform:translateY(0) rotate(1deg);}50%{transform:translateY(-8px) rotate(-1deg);}}
+    @keyframes fc2f{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-6px) rotate(.5deg);}}
+    .fc-eyebrow{font-size:.58rem;color:var(--t4);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.1em;}
+    .fc-big{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--t1);letter-spacing:-.03em;}
+    .fc-sub{font-size:.62rem;color:var(--t3);margin-top:.2rem;}
+    .fc-pill{display:inline-flex;align-items:center;gap:.3rem;background:rgba(42,107,53,.2);border:1px solid rgba(42,107,53,.3);color:var(--naira-glow);border-radius:100px;font-size:.6rem;font-weight:600;padding:.2rem .55rem;}
+
+    /* MARQUEE */
+    .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.85rem 0;position:relative;z-index:1;}
+    .marquee-track{display:flex;animation:marquee 35s linear infinite;white-space:nowrap;}
+    .marquee-item{display:inline-flex;align-items:center;gap:.6rem;padding:0 2rem;font-size:.75rem;font-weight:500;color:var(--t4);letter-spacing:.04em;}
+    .m-sep{color:var(--kola);opacity:.7;font-size:.6rem;}
+    @keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+    /* SECTIONS */
+    section{position:relative;z-index:1;}
+    .container{max-width:1320px;margin:0 auto;padding:0 4rem;}
+
+    .section-kicker{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--kola);margin-bottom:1.25rem;}
+    h2{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4vw,3.6rem);font-weight:700;line-height:1.08;letter-spacing:-.03em;color:var(--t1);margin-bottom:1.25rem;}
+    h2 em{font-style:italic;font-weight:400;color:var(--kola-soft);}
+    h2 .green-em{font-style:italic;font-weight:400;color:var(--naira-glow);}
+    .section-body{font-size:1rem;font-weight:300;color:var(--t2);line-height:1.75;max-width:560px;}
+
+    /* PROBLEM */
+    .problem-section{padding:8rem 4rem;background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+    .pain-list{list-style:none;margin-top:2.5rem;display:flex;flex-direction:column;}
+    .pain-item{display:flex;gap:1.25rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid var(--border);}
+    .pain-item:first-child{border-top:1px solid var(--border);}
+    .pain-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--border-hi);line-height:1;min-width:44px;transition:color .3s;}
+    .pain-item:hover .pain-num{color:var(--kola);}
+    .pain-copy h4{font-size:.95rem;font-weight:600;color:var(--t1);margin-bottom:.3rem;letter-spacing:-.01em;}
+    .pain-copy p{font-size:.85rem;color:var(--t3);line-height:1.6;font-weight:300;}
+
+    .quote-card{background:var(--surface);border:1px solid var(--border-hi);border-radius:24px;padding:3rem;position:relative;overflow:hidden;margin-top:5rem;}
+    .quote-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--kola) 0%,transparent 60%);}
+    .quote-card::after{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border:40px solid rgba(200,82,26,.04);transform:rotate(45deg);}
+    .quote-mark{font-family:'Playfair Display',serif;font-size:5rem;line-height:1;color:var(--kola);opacity:.3;margin-bottom:-1rem;display:block;}
+    .quote-text{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;font-style:italic;color:var(--t1);line-height:1.65;margin-bottom:2rem;position:relative;z-index:1;}
+    .quote-person{display:flex;align-items:center;gap:.9rem;}
+    .qp-av{width:42px;height:42px;border-radius:12px;background:var(--naira);border:1px solid var(--naira-hi);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .qp-name{font-size:.88rem;font-weight:600;color:var(--t1);margin-bottom:.1rem;}
+    .qp-role{font-size:.75rem;color:var(--t4);}
+
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3rem;}
+    .stat-cell{padding:2rem;border-right:1px solid var(--border);}
+    .stat-cell:last-child{border-right:none;}
+    .stat-n{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--t1);letter-spacing:-.04em;line-height:1;margin-bottom:.4rem;}
+    .stat-n span{color:var(--kola);}
+    .stat-label{font-size:.78rem;color:var(--t3);line-height:1.4;}
+
+    /* DEMO */
+    .demo-section{padding:8rem 4rem;background:var(--void);}
+    .demo-header{text-align:center;max-width:700px;margin:0 auto 5rem;}
+    .demo-header .section-body{margin:0 auto;text-align:center;}
+    .demo-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:start;max-width:1200px;margin:0 auto;}
+
+    .chat-shell{background:var(--surface);border:1px solid var(--border-hi);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.4);}
+    .chat-topbar{padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.9rem;}
+    .chat-avatar{width:38px;height:38px;background:var(--naira);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--naira-pale);}
+    .chat-info p{font-size:.88rem;font-weight:600;color:var(--t1);}
+    .chat-info span{font-size:.7rem;color:var(--naira-glow);}
+    .chat-status-dot{display:inline-block;width:6px;height:6px;background:var(--naira-glow);border-radius:50%;margin-right:4px;animation:pulseDot 2s ease-in-out infinite;}
+    @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.4}}
+
+    .chat-messages{padding:1.5rem;min-height:380px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:1rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+    .chat-messages::-webkit-scrollbar{width:4px;}
+    .chat-messages::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:2px;}
+    .cmsg{display:flex;flex-direction:column;max-width:84%;}
+    .cmsg.bot{align-self:flex-start;}
+    .cmsg.usr{align-self:flex-end;}
+    .cmsg-who{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;color:var(--t4);}
+    .cmsg.usr .cmsg-who{text-align:right;}
+    .cmsg-bub{padding:.75rem 1rem;border-radius:14px;font-size:.88rem;line-height:1.65;}
+    .cmsg.bot .cmsg-bub{background:var(--elevated);color:var(--t2);border-radius:4px 14px 14px 14px;}
+    .cmsg.usr .cmsg-bub{background:var(--naira);color:var(--naira-pale);border-radius:14px 4px 14px 14px;}
+    .typing-dots{display:none;align-items:center;gap:4px;padding:.75rem 1rem;background:var(--elevated);border-radius:4px 14px 14px 14px;width:fit-content;}
+    .typing-dots.show{display:flex;}
+    .td{width:6px;height:6px;border-radius:50%;background:var(--t4);animation:tdp 1.3s ease-in-out infinite;}
+    .td:nth-child(2){animation-delay:.18s;}.td:nth-child(3){animation-delay:.36s;}
+    @keyframes tdp{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+    .chat-input-row{padding:1rem 1.25rem;border-top:1px solid var(--border);display:flex;gap:.75rem;align-items:flex-end;}
+    #chatInput{flex:1;background:var(--elevated);border:1px solid var(--border-hi);border-radius:10px;padding:.7rem 1rem;color:var(--t1);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;resize:none;min-height:42px;max-height:120px;line-height:1.5;transition:border-color .2s;}
+    #chatInput::placeholder{color:var(--t4);}
+    #chatInput:focus{border-color:var(--naira-hi);}
+    #sendBtn{width:42px;height:42px;flex-shrink:0;background:var(--kola);border:none;border-radius:10px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;}
+    #sendBtn:hover{background:#b84515;transform:scale(1.05);}
+
+    .prompts-side{display:flex;flex-direction:column;gap:1rem;padding-top:.5rem;}
+    .prompts-label{font-size:.72rem;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.1em;}
+    .pill-grid{display:flex;flex-direction:column;gap:.5rem;}
+    .prompt-pill{padding:.75rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.83rem;color:var(--t2);cursor:pointer;transition:all .15s;line-height:1.4;text-align:left;font-family:'DM Sans',sans-serif;}
+    .prompt-pill:hover{background:var(--elevated);border-color:var(--naira-hi);color:var(--t1);transform:translateX(3px);}
+    .demo-capabilities{margin-top:2rem;display:flex;flex-direction:column;gap:1rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;}
+    .cap-item{display:flex;gap:.75rem;align-items:flex-start;}
+    .cap-icon{width:30px;height:30px;flex-shrink:0;background:var(--elevated);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+    .cap-text h5{font-size:.82rem;font-weight:600;color:var(--t1);margin-bottom:.1rem;}
+    .cap-text p{font-size:.75rem;color:var(--t3);line-height:1.4;}
+
+    /* HOW */
+    .how-section{padding:8rem 4rem;background:var(--deep);border-top:1px solid var(--border);}
+    .how-inner{display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:start;}
+    .how-steps{display:flex;flex-direction:column;}
+    .how-step{display:flex;gap:1.75rem;padding:2rem 0;border-bottom:1px solid var(--border);position:relative;}
+    .how-step:first-child{border-top:1px solid var(--border);}
+    .step-line{position:absolute;left:17px;top:2rem;bottom:-2rem;width:1px;background:var(--border);}
+    .how-step:last-child .step-line{display:none;}
+    .step-circle{width:36px;height:36px;border-radius:50%;flex-shrink:0;border:1px solid var(--border-hi);background:var(--elevated);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;color:var(--t3);position:relative;z-index:1;transition:all .3s;}
+    .how-step:hover .step-circle{background:var(--naira);border-color:var(--naira-hi);color:var(--naira-pale);}
+    .step-content h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:.4rem;}
+    .step-content p{font-size:.85rem;color:var(--t3);line-height:1.65;font-weight:300;}
+
+    .timeline-visual{background:var(--surface);border:1px solid var(--border-hi);border-radius:24px;overflow:hidden;}
+    .tv-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+    .tv-title{font-size:.78rem;font-weight:600;color:var(--t2);letter-spacing:.03em;}
+    .tv-badge{font-size:.65rem;font-weight:600;background:rgba(42,107,53,.15);border:1px solid rgba(42,107,53,.25);color:var(--naira-glow);border-radius:100px;padding:.2rem .6rem;}
+    .tv-body{padding:1.5rem;}
+    .tv-bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;}
+    .tv-bar-label{font-size:.62rem;color:var(--t4);width:52px;flex-shrink:0;text-align:right;}
+    .tv-bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+    .tv-bar-fill{height:100%;border-radius:3px;}
+    .tv-bar-val{font-size:.62rem;color:var(--t3);width:52px;}
+    .green-fill{background:linear-gradient(90deg,var(--naira-hi),var(--naira-glow));}
+    .red-fill{background:linear-gradient(90deg,var(--kola),var(--kola-soft));}
+    .gold-fill{background:linear-gradient(90deg,var(--aso),var(--aso-soft));}
+    .tv-divider{height:1px;background:var(--border);margin:1rem 0;}
+    .tv-alert{background:rgba(200,82,26,.08);border:1px solid rgba(200,82,26,.15);border-radius:10px;padding:.75rem .9rem;font-size:.7rem;color:var(--kola-pale);line-height:1.5;}
+    .tv-alert-title{font-weight:600;margin-bottom:.2rem;color:var(--kola-soft);}
+    .tv-prediction{background:rgba(42,107,53,.08);border:1px solid rgba(42,107,53,.15);border-radius:10px;padding:.75rem .9rem;font-size:.7rem;color:var(--naira-pale);line-height:1.5;margin-top:.75rem;}
+    .tv-pred-title{font-weight:600;margin-bottom:.2rem;color:var(--naira-glow);}
+
+    /* FEATURES */
+    .features-section{padding:8rem 4rem;background:var(--void);}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:4rem;}
+    .feat-cell{background:var(--surface);padding:2.5rem;transition:background .2s;}
+    .feat-cell:hover{background:var(--elevated);}
+    .feat-icon-wrap{width:48px;height:48px;border-radius:12px;border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:1.5rem;background:var(--elevated);}
+    .feat-cell h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--t1);margin-bottom:.6rem;letter-spacing:-.02em;}
+    .feat-cell p{font-size:.82rem;color:var(--t3);line-height:1.65;font-weight:300;}
+    .feat-metric{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--t4);}
+    .feat-metric strong{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--kola-soft);display:block;margin-bottom:.15rem;letter-spacing:-.03em;}
+
+    /* WAITLIST */
+    .waitlist-section{padding:10rem 4rem;background:var(--deep);border-top:1px solid var(--border);position:relative;overflow:hidden;}
+    .waitlist-section::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 59px,rgba(200,82,26,.022) 60px),repeating-linear-gradient(-45deg,transparent,transparent 59px,rgba(200,82,26,.022) 60px);pointer-events:none;}
+    .waitlist-inner{max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+    .waitlist-inner h2{margin-bottom:1.25rem;}
+    .waitlist-inner .section-body{margin:0 auto 2.75rem;text-align:center;}
+    .city-badges{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+    .city-badge{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.72rem;color:var(--t3);}
+    .wl-form{display:flex;gap:.75rem;max-width:500px;margin:0 auto 1.75rem;}
+    .wl-email{flex:1;background:var(--surface);border:1px solid var(--border-hi);border-radius:10px;padding:1rem 1.1rem;color:var(--t1);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .wl-email:focus{border-color:var(--naira-hi);}
+    .wl-email::placeholder{color:var(--t4);}
+    .wl-submit{background:var(--kola);color:#fff;border:none;border-radius:10px;padding:1rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+    .wl-submit:hover{background:#b84515;transform:translateY(-1px);}
+    .wl-trust{display:flex;justify-content:center;gap:2rem;font-size:.75rem;color:var(--t4);}
+    .wl-trust span{display:flex;align-items:center;gap:.35rem;}
+
+    /* FOOTER */
+    footer{background:var(--void);border-top:1px solid var(--border);padding:2.5rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+    .footer-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+    .footer-logo-mark{width:32px;height:32px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:var(--naira-pale);}
+    .footer-logo-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--t2);letter-spacing:-.02em;}
+    .footer-links{display:flex;gap:2rem;}
+    .footer-links a{color:var(--t4);text-decoration:none;font-size:.8rem;transition:color .2s;}
+    .footer-links a:hover{color:var(--t2);}
+    footer p{font-size:.75rem;color:var(--t4);}
+
+    /* DASHBOARD BENTO */
+    .dashboard-section{padding:8rem 4rem;background:var(--void);border-top:1px solid var(--border);}
+    .bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem;}
+    .bento-card{background:var(--surface);border:1px solid var(--border-hi);border-radius:24px;padding:2rem;display:flex;flex-direction:column;gap:1.5rem;transition:transform .3s,border-color .3s;position:relative;overflow:hidden;}
+    .bento-card:hover{transform:translateY(-3px);border-color:var(--naira-hi);}
+    .b-span-2{grid-column:span 2;}
+    .bg-mesh::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(42,107,53,0.1),transparent 60%);pointer-events:none;}
+
+    .card-head{display:flex;justify-content:space-between;align-items:center;}
+    .card-head h4{font-size:1.05rem;font-weight:600;color:var(--t1);}
+    .sub-text{font-size:.7rem;color:var(--t4);}
+    .trend-badge{font-size:.65rem;font-weight:600;padding:.25rem .6rem;border-radius:100px;background:rgba(42,107,53,0.15);color:var(--naira-glow);}
+    .trend-badge.positive{color:var(--naira-glow);}
+
+    .nw-main{margin-top:.5rem;}
+    .nw-val{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;line-height:1;margin-bottom:.3rem;color:var(--t1);}
+    .nw-label{font-size:.8rem;color:var(--t3);}
+
+    .nw-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:1rem;background:var(--elevated);padding:1.25rem;border-radius:16px;border:1px solid var(--border);}
+    .nw-item{display:flex;gap:.75rem;align-items:flex-start;}
+    .nw-dot{width:10px;height:10px;border-radius:50%;margin-top:4px;}
+    .nw-dot.green{background:var(--naira-glow);}
+    .nw-dot.red{background:var(--kola-soft);}
+    .nw-item h5{font-size:.75rem;color:var(--t3);margin-bottom:.1rem;}
+    .nw-item p{font-size:.95rem;font-weight:600;color:var(--t1);}
+
+    .nw-flows{display:flex;align-items:center;gap:2rem;margin-top:.5rem;}
+    .nw-flow{display:flex;align-items:center;gap:.75rem;}
+    .flow-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;}
+    .flow-icon.inflow{background:rgba(42,107,53,0.2);color:var(--naira-glow);}
+    .flow-icon.outflow{background:rgba(200,82,26,0.2);color:var(--kola-soft);}
+    .nw-flow h5{font-size:.7rem;color:var(--t3);margin-bottom:.1rem;}
+    .nw-flow p{font-size:.85rem;font-weight:600;color:var(--t1);}
+
+    .bento-btn-outline{background:transparent;border:1px solid var(--border-hi);color:var(--t2);padding:.5rem 1rem;border-radius:8px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;}
+    .bento-btn-outline:hover{background:var(--elevated);color:var(--t1);border-color:var(--naira-hi);}
+
+    .cf-viz{flex:1;display:flex;align-items:flex-end;justify-content:space-between;padding:.5rem 0;}
+    .cf-bars{display:flex;justify-content:space-between;width:100%;height:140px;align-items:flex-end;}
+    .cf-col{display:flex;align-items:flex-end;gap:4px;width:18%;height:100%;position:relative;}
+    .cf-col span{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--t4);}
+    .cf-bar{border-radius:4px 4px 0 0;width:100%;background:var(--elevated);}
+    .cf-bar.in{background:linear-gradient(180deg,var(--naira-hi),rgba(42,107,53,0.4));}
+    .cf-bar.out{background:linear-gradient(180deg,var(--border-hi),var(--elevated));}
+    .cf-col.active .cf-bar.out{background:linear-gradient(180deg,var(--kola-soft),rgba(200,82,26,0.3));}
+
+    .freeze-action{display:flex;justify-content:space-between;align-items:center;background:var(--elevated);padding:1rem;border-radius:12px;border:1px solid var(--border);}
+    .freeze-txt h5{font-size:.8rem;color:var(--t1);margin-bottom:.2rem;}
+    .freeze-txt p{font-size:.65rem;color:var(--t3);}
+    .toggle-switch{width:42px;height:24px;background:var(--border-hi);border-radius:12px;position:relative;cursor:pointer;transition:background .3s;}
+    .toggle-switch::after{content:'';position:absolute;width:18px;height:18px;background:var(--t2);top:3px;left:3px;border-radius:50%;transition:transform .3s,background .3s;}
+    .toggle-switch.active{background:var(--naira-hi);}
+    .toggle-switch.active::after{transform:translateX(18px);background:#fff;}
+
+    .repo-list{display:flex;flex-direction:column;gap:1.25rem;}
+    .repo-item{display:flex;gap:1rem;align-items:center;}
+    .repo-icon{width:42px;height:42px;background:var(--elevated);border:1px solid var(--border-hi);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .repo-info{flex:1;}
+    .repo-info h5{font-size:.85rem;color:var(--t1);margin-bottom:.4rem;}
+    .repo-info p{font-size:.65rem;color:var(--t4);margin-top:.4rem;text-align:right;}
+    .repo-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+    .repo-fill{height:100%;background:linear-gradient(90deg,var(--naira-hi),var(--naira-glow));border-radius:3px;}
+
+    .debt-list{display:flex;flex-direction:column;gap:1rem;}
+    .debt-item{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:var(--elevated);border-radius:12px;border:1px solid var(--border);}
+    .debt-log{width:32px;height:32px;background:rgba(200,82,26,0.1);color:var(--kola-soft);display:flex;align-items:center;justify-content:center;border-radius:8px;}
+    .debt-info{flex:1;margin:0 1rem;}
+    .debt-info h5{font-size:.8rem;color:var(--t1);margin-bottom:.2rem;}
+    .debt-info p{font-size:.65rem;color:var(--kola-pale);}
+    .debt-amt{font-size:.85rem;font-weight:600;color:var(--t1);}
+
+    .bento-divider{border:none;border-top:1px solid var(--border);margin:0;}
+    .mt-2{margin-top:.5rem;}
+
+    .asset-chips{display:flex;flex-wrap:wrap;gap:.75rem;}
+    .a-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .75rem;background:var(--elevated);border:1px solid var(--border-hi);border-radius:100px;font-size:.7rem;color:var(--t2);}
+    .chip-dot{width:8px;height:8px;border-radius:50%;}
+    .chip-dot.gold{background:var(--aso-soft);}
+    .chip-dot.green{background:var(--naira-glow);}
+
+    .icon-btn{width:28px;height:28px;background:transparent;border:1px solid var(--border-hi);border-radius:6px;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+    .icon-btn:hover{background:var(--elevated);color:var(--t1);}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;}
+    .reveal.in{opacity:1;transform:translateY(0);}
+
+    @media(max-width:1100px){.fc1{right:-50px;}.fc2{left:-50px;}}
+    @media(max-width:900px){
+      nav{padding:1.25rem 2rem;}.nav-center{display:none;}
+      .hero{padding:7rem 2rem 4rem;}.hero-inner{grid-template-columns:1fr;gap:3rem;}.hero-visual{order:-1;}
+      .fc1,.fc2{display:none;}
+      .problem-section,.demo-section,.how-section,.features-section,.waitlist-section,.dashboard-section{padding:5rem 2rem;}
+      .problem-grid{grid-template-columns:1fr;gap:3rem;}.demo-grid{grid-template-columns:1fr;}.how-inner{grid-template-columns:1fr;gap:3rem;}
+      .features-grid{grid-template-columns:1fr;}.stats-row{grid-template-columns:1fr;}
+      .bento-grid{grid-template-columns:1fr;}
+      .b-span-2{grid-column:1/-1;}
+      .nw-flows{flex-direction:column;align-items:flex-start;gap:1.25rem;}
+      .bento-btn-outline{margin-left:0 !important;}
+      .debt-list{grid-template-columns:1fr !important;}
+      .stat-cell{border-right:none;border-bottom:1px solid var(--border);}.stat-cell:last-child{border-bottom:none;}
+      .wl-form{flex-direction:column;}
+      footer{flex-direction:column;gap:1.5rem;text-align:center;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="adire-bg"></div>
+
+<nav id="mainNav">
+  <a href="#" class="logo-group">
+    <div class="logo-emblem"><span class="logo-naira">₦</span></div>
+    <span class="logo-wordmark">Kobo</span>
+  </a>
+  <div class="nav-center">
+    <a href="#features">Features</a>
+    <a href="#demo">Live Demo</a>
+    <a href="#how">How It Works</a>
+    <a href="#waitlist">Early Access</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="btn-ghost">Sign in</a>
+    <a href="#waitlist" class="btn-kola">Join Waitlist →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <div class="tag-dot">₦</div>
+        AI Financial Coach · Lagos
+      </div>
+      <h1>
+        Your money,<br>
+        <span class="kola-word">smarter.</span><br>
+        <span class="accent-line">No more gbese days.</span>
+      </h1>
+      <p class="hero-sub">
+        Kobo predicts your balance <strong>14 days ahead</strong>, nudges you before you overspend, and turns your salary into something that actually lasts.
+      </p>
+      <div class="hero-ctas">
+        <a href="#waitlist" class="btn-primary-hero">Get Early Access →</a>
+        <a href="#demo" class="btn-link-hero">Try the AI coach ↓</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-faces">
+          <div class="face f1">AO</div>
+          <div class="face f2">TN</div>
+          <div class="face f3">KC</div>
+          <div class="face f4">FS</div>
+          <div class="face f5">ZA</div>
+        </div>
+        <div class="proof-text">
+          <strong>2,400+ Nigerians on the waitlist</strong>
+          Lagos · Abuja · Port Harcourt · Accra
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="phone-scene">
+        <div class="f-card fc1">
+          <div class="fc-eyebrow">14-day forecast</div>
+          <div class="fc-big">₦91,400</div>
+          <div class="fc-sub">Predicted on the 28th</div>
+          <div style="margin-top:.5rem"><span class="fc-pill">▲ On track</span></div>
+        </div>
+        <div class="f-card fc2">
+          <div class="fc-eyebrow">Smart nudge</div>
+          <div style="font-size:.72rem;color:var(--kola-pale);line-height:1.5;margin-top:.2rem;">Payday detected 🎉<br>Auto-save ₦45k now?</div>
+          <div style="margin-top:.6rem;display:flex;gap:.4rem;">
+            <div style="background:var(--naira);color:var(--naira-pale);font-size:.6rem;font-weight:600;padding:.25rem .6rem;border-radius:6px;cursor:pointer;">Yes, save</div>
+            <div style="background:var(--elevated);color:var(--t3);font-size:.6rem;padding:.25rem .6rem;border-radius:6px;cursor:pointer;">Later</div>
+          </div>
+        </div>
+        <div class="phone-shell">
+          <div class="phone-face">
+            <div class="ph-pill"><div class="ph-pill-bar"></div></div>
+            <div class="ph-body">
+              <div class="ph-greeting">Good morning ☀️</div>
+              <div class="ph-name">Adaeze O.</div>
+              <div class="ph-balance-card">
+                <div class="ph-bal-label">Balance</div>
+                <div class="ph-bal-amount">₦148,200</div>
+                <div class="ph-bal-sub">Safe to spend: <span>₦41,000</span></div>
+              </div>
+              <div class="ph-forecast">
+                <div class="ph-fc-row">
+                  <span class="ph-fc-label">Food (week)</span>
+                  <span class="ph-fc-val">₦8,200 / ₦15k</span>
+                </div>
+                <div class="ph-bar-track"><div class="ph-bar-fill" style="width:55%"></div></div>
+              </div>
+              <div class="ph-nudge">
+                <div class="nudge-dot">⚡</div>
+                <div>Netflix renews tomorrow — ₦4,400. You'll have ₦143,800 after.</div>
+              </div>
+              <div class="ph-chat-row">
+                <div class="ph-msg bot">Can I afford dinner out tonight?</div>
+                <div class="ph-msg user">Safe: ₦3,400. Keep it under ₦2,500? 🍽️</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="m-sep">◆</span> 14-day cash flow forecasting</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Pidgin-friendly AI coach</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Predictive nudges</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Payday auto-save</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> GTBank · UBA · Zenith · Access</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Black tax tracking</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Goal-based micro-saving</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Debt intelligence</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> 85%+ forecast accuracy</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> SMS bank parsing</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> 14-day cash flow forecasting</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Pidgin-friendly AI coach</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Predictive nudges</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Payday auto-save</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> GTBank · UBA · Zenith · Access</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Black tax tracking</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Goal-based micro-saving</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> Debt intelligence</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> 85%+ forecast accuracy</span>
+    <span class="marquee-item"><span class="m-sep">◆</span> SMS bank parsing</span>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="reveal">
+        <div class="section-kicker">The problem</div>
+        <h2>You earn well.<br>But money <em>disappears</em><br>before month-end.</h2>
+        <ul class="pain-list">
+          <li class="pain-item">
+            <div class="pain-num">01</div>
+            <div class="pain-copy">
+              <h4>The salary week trap</h4>
+              <p>Great lifestyle week 1. Rationing data week 4. Every single month — no matter how much you earn.</p>
+            </div>
+          </li>
+          <li class="pain-item">
+            <div class="pain-num">02</div>
+            <div class="pain-copy">
+              <h4>Multiple streams, zero clarity</h4>
+              <p>9-5 + side hustle + freelance + family support = money everywhere, clarity nowhere.</p>
+            </div>
+          </li>
+          <li class="pain-item">
+            <div class="pain-num">03</div>
+            <div class="pain-copy">
+              <h4>Invisible obligations</h4>
+              <p>Netflix, DSTV, esusu, aso-ebi, "bro I need small help" — ₦40k a month you never planned for.</p>
+            </div>
+          </li>
+          <li class="pain-item">
+            <div class="pain-num">04</div>
+            <div class="pain-copy">
+              <h4>Apps that only look backward</h4>
+              <p>PiggyVest, Kuda, your Excel sheet — they show what happened. Kobo shows what's coming.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal" style="transition-delay:.15s">
+        <div class="quote-card">
+          <span class="quote-mark">"</span>
+          <p class="quote-text">I earn ₦450k a month and somehow I'm always borrowing ₦5k by the 25th. I genuinely didn't know where it was going.</p>
+          <div class="quote-person">
+            <div class="qp-av">👩🏾</div>
+            <div>
+              <div class="qp-name">Adaeze, 29</div>
+              <div class="qp-role">Product Manager, Lagos</div>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row reveal" style="transition-delay:.3s">
+          <div class="stat-cell">
+            <div class="stat-n">78<span>%</span></div>
+            <div class="stat-label">of Nigerian professionals run out before payday</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n">₦40<span>k</span></div>
+            <div class="stat-label">avg. monthly spend on unplanned obligations</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n">5<span>d</span></div>
+            <div class="stat-label">avg. "stranded" days before next payday</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo-section" id="demo">
+  <div class="demo-header reveal">
+    <div class="section-kicker">Live Demo — Powered by Claude AI</div>
+    <h2>Talk to your <span class="green-em">Kobo coach.</span></h2>
+    <p class="section-body">This is a real AI coach trained on Nigerian financial culture. Ask about your budget, salary, subscriptions, savings goals — or just tell it you're always broke before the 25th.</p>
+  </div>
+  <div class="demo-grid">
+    <div class="chat-shell reveal">
+      <div class="chat-topbar">
+        <div class="chat-avatar">K</div>
+        <div class="chat-info">
+          <p>Kobo AI Coach</p>
+          <span><span class="chat-status-dot"></span>Online · Powered by Claude</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMsgs">
+        <div class="cmsg bot">
+          <div class="cmsg-who">Kobo</div>
+          <div class="cmsg-bub">Hey! 👋 I'm your Kobo financial coach. I can help you plan your budget, forecast your balance, tackle that "always broke before payday" problem, or work toward any savings goal. What's on your mind?</div>
+        </div>
+      </div>
+      <div style="padding:0 1.25rem .5rem">
+        <div class="typing-dots" id="typingDots">
+          <div class="td"></div><div class="td"></div><div class="td"></div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <textarea id="chatInput" placeholder="Ask anything about your money…" rows="1"></textarea>
+        <button id="sendBtn" onclick="sendMsg()">↑</button>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.1s">
+      <div class="prompts-side">
+        <div class="prompts-label">Try asking</div>
+        <div class="pill-grid">
+          <button class="prompt-pill" onclick="usePrompt(this)">I earn ₦350k/month — help me build a budget</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">Can I afford dinner out tonight?</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">I always run out of money by the 25th 😩</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">How do I save for Detty December?</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">I have 3 subscriptions I keep forgetting about</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">My family expects ₦30k every month — how do I budget for that?</button>
+          <button class="prompt-pill" onclick="usePrompt(this)">What's a realistic emergency fund for someone in Lagos?</button>
+        </div>
+      </div>
+      <div class="demo-capabilities">
+        <div class="cap-item">
+          <div class="cap-icon">🧠</div>
+          <div class="cap-text">
+            <h5>Nigerian context built in</h5>
+            <p>Knows black tax, esusu, aso-ebi, Detty December — all the things most finance apps ignore.</p>
+          </div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">🗣️</div>
+          <div class="cap-text">
+            <h5>Pidgin-friendly</h5>
+            <p>Talk how you naturally talk. Kobo gets you.</p>
+          </div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon">🔮</div>
+          <div class="cap-text">
+            <h5>Predictive, not reactive</h5>
+            <p>In the full app, Kobo connects to your bank via Mono for real 14-day balance forecasts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how-section" id="how">
+  <div class="container">
+    <div class="how-inner">
+      <div class="reveal">
+        <div class="section-kicker">How it works</div>
+        <h2>Reactive<br>to <span class="green-em">predictive</span><br>in 3 minutes.</h2>
+        <p class="section-body" style="margin-top:1.25rem">Kobo learns your money patterns and gets ahead of problems — before they become emergencies.</p>
+        <div class="how-steps" style="margin-top:3rem">
+          <div class="how-step">
+            <div class="step-line"></div>
+            <div class="step-circle">1</div>
+            <div class="step-content">
+              <h3>Connect your money</h3>
+              <p>Link via Mono or forward 3 SMS alerts. Kobo ingests 90 days of history and learns your salary rhythm, fixed costs, and spending velocity.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="step-line"></div>
+            <div class="step-circle">2</div>
+            <div class="step-content">
+              <h3>See 14 days ahead</h3>
+              <p>Your personal cash flow forecast appears. Finally understand why you're always broke by the 25th — and what to do before it happens.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="step-circle">3</div>
+            <div class="step-content">
+              <h3>Act before it goes wrong</h3>
+              <p>Payday auto-save. Subscription alerts 48 hours early. "Tight week ahead" warnings 3 days out. You stop reacting and start planning.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-visual reveal" style="transition-delay:.2s">
+        <div class="tv-header">
+          <span class="tv-title">Your 14-day forecast</span>
+          <span class="tv-badge">85%+ accuracy</span>
+        </div>
+        <div class="tv-body">
+          <div class="tv-bar-row">
+            <div class="tv-bar-label">Today</div>
+            <div class="tv-bar-track"><div class="tv-bar-fill green-fill" style="width:88%"></div></div>
+            <div class="tv-bar-val">₦148k</div>
+          </div>
+          <div class="tv-bar-row">
+            <div class="tv-bar-label">Day 3</div>
+            <div class="tv-bar-track"><div class="tv-bar-fill green-fill" style="width:72%"></div></div>
+            <div class="tv-bar-val">₦118k</div>
+          </div>
+          <div class="tv-bar-row">
+            <div class="tv-bar-label">Day 7</div>
+            <div class="tv-bar-track"><div class="tv-bar-fill gold-fill" style="width:42%"></div></div>
+            <div class="tv-bar-val">₦70k</div>
+          </div>
+          <div class="tv-bar-row">
+            <div class="tv-bar-label">Day 10</div>
+            <div class="tv-bar-track"><div class="tv-bar-fill red-fill" style="width:18%"></div></div>
+            <div class="tv-bar-val">₦29k</div>
+          </div>
+          <div class="tv-bar-row">
+            <div class="tv-bar-label">Day 14</div>
+            <div class="tv-bar-track"><div class="tv-bar-fill red-fill" style="width:8%"></div></div>
+            <div class="tv-bar-val">₦12k</div>
+          </div>
+          <div class="tv-divider"></div>
+          <div class="tv-alert">
+            <div class="tv-alert-title">⚡ Kobo sees a problem</div>
+            At this rate you'll hit ₦12k by day 14 — 3 days before payday. 3 subscriptions renewing next week (₦18,200 total).
+          </div>
+          <div class="tv-prediction">
+            <div class="tv-pred-title">✅ Suggested action</div>
+            Pause DSTV + move Spotify to payday. Save ₦18k now = comfortable week ahead.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="dashboard-section clear-section" id="dashboard">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-kicker">Inside Kobo</div>
+      <h2>Your entire financial life.<br><em>One tap away.</em></h2>
+      <p class="section-body">
+        Everything you need to visualize, plan, and execute your financial strategy.
+      </p>
+    </div>
+
+    <div class="bento-grid reveal" style="transition-delay:0.1s">
+      <!-- Card 1: Net Worth & Assets (Large span) -->
+      <div class="bento-card bg-mesh b-span-2">
+        <div class="card-head">
+          <h4>Net Worth Overview</h4>
+          <span class="trend-badge positive">▲ +12% this month</span>
+        </div>
+        <div class="nw-main">
+          <div class="nw-val">₦4,250,000</div>
+          <div class="nw-label">Total Net Worth</div>
+        </div>
+        <div class="nw-breakdown">
+          <div class="nw-item">
+            <span class="nw-dot green"></span>
+            <div>
+              <h5>Assets</h5>
+              <p>₦5,100,000</p>
+            </div>
+          </div>
+          <div class="nw-item">
+            <span class="nw-dot red"></span>
+            <div>
+              <h5>Liabilities (Debts)</h5>
+              <p>₦850,000</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="nw-flows">
+          <div class="nw-flow">
+            <div class="flow-icon inflow">↓</div>
+            <div>
+              <h5>Income</h5>
+              <p>₦850,000</p>
+            </div>
+          </div>
+          <div class="nw-flow">
+            <div class="flow-icon outflow">↑</div>
+            <div>
+              <h5>Expenditure</h5>
+              <p>₦320,000</p>
+            </div>
+          </div>
+          <button class="bento-btn-outline" style="margin-left:auto; font-size:0.75rem;">Update Flow</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Cash Flow Viz -->
+      <div class="bento-card">
+         <div class="card-head">
+          <h4>Monthly Cash Flow</h4>
+          <span class="sub-text">w/o previous month</span>
+        </div>
+        <div class="cf-viz">
+           <div class="cf-bars">
+             <div class="cf-col"><div class="cf-bar in" style="height:60%"></div><div class="cf-bar out" style="height:20%"></div><span>W1</span></div>
+             <div class="cf-col"><div class="cf-bar in" style="height:80%"></div><div class="cf-bar out" style="height:40%"></div><span>W2</span></div>
+             <div class="cf-col active"><div class="cf-bar in" style="height:40%"></div><div class="cf-bar out" style="height:70%"></div><span>W3</span></div>
+             <div class="cf-col"><div class="cf-bar in" style="height:50%"></div><div class="cf-bar out" style="height:30%"></div><span>W4</span></div>
+           </div>
+        </div>
+        <div class="freeze-action">
+          <div class="freeze-txt">
+            <h5>Freeze Weekly Cash Flow</h5>
+            <p>Lock your limits for this week.</p>
+          </div>
+          <div class="toggle-switch active"></div>
+        </div>
+      </div>
+
+      <!-- Card 3: Budgets & Repos -->
+      <div class="bento-card">
+         <div class="card-head">
+          <h4>Spending Plans & Spaces</h4>
+          <button class="icon-btn" aria-label="Add plan">+</button>
+        </div>
+        <div class="repo-list">
+          <div class="repo-item">
+            <div class="repo-icon">✈️</div>
+            <div class="repo-info">
+              <h5>Detty December</h5>
+              <div class="repo-track"><div class="repo-fill" style="width:75%"></div></div>
+              <p>₦450k / ₦600k</p>
+            </div>
+          </div>
+          <div class="repo-item">
+            <div class="repo-icon">🏠</div>
+            <div class="repo-info">
+              <h5>Rent 2026</h5>
+              <div class="repo-track"><div class="repo-fill" style="width:40%"></div></div>
+              <p>₦800k / ₦2M</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Debts & Assets Breakdown -->
+      <div class="bento-card b-span-2">
+         <div class="card-head">
+          <h4>Debts Breakdown</h4>
+        </div>
+        <div class="debt-list" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div class="debt-item">
+            <div class="debt-log">💳</div>
+            <div class="debt-info">
+              <h5>Palmcredit Loan</h5>
+              <p>Due in 12 days</p>
+            </div>
+            <div class="debt-amt">₦150k</div>
+          </div>
+          <div class="debt-item">
+            <div class="debt-log">🤝</div>
+            <div class="debt-info">
+              <h5>Uncle Tunde</h5>
+              <p>Informal (No interest)</p>
+            </div>
+            <div class="debt-amt">₦700k</div>
+          </div>
+        </div>
+        <hr class="bento-divider" style="margin-top:1.5rem; margin-bottom:0.8rem;">
+        <div class="card-head mt-2">
+          <h4>Monitor Assets</h4>
+        </div>
+        <div class="asset-chips">
+          <span class="a-chip"><span class="chip-dot gold"></span>Stocks: ₦2.1M</span>
+          <span class="a-chip"><span class="chip-dot green"></span>Savings: ₦3.0M</span>
+          <span class="a-chip"><span class="chip-dot gold"></span>Crypto: ₦1.8M</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-kicker">Features</div>
+      <h2>Everything your salary<br>needs to <em>survive</em> the month.</h2>
+    </div>
+    <div class="features-grid reveal" style="transition-delay:.15s">
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">🔮</div>
+        <h3>Cash Flow Forecasting</h3>
+        <p>Predicts your balance up to 14 days ahead using time-series AI trained on your personal spending patterns and Nigerian salary cycles.</p>
+        <div class="feat-metric"><strong>85%+</strong>Forecast accuracy</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">💬</div>
+        <h3>Conversational AI Coach</h3>
+        <p>WhatsApp-style chat. Ask anything. Kobo responds in plain English or Pidgin — warm, never shaming, always actionable.</p>
+        <div class="feat-metric"><strong>24/7</strong>Always available</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">⚡</div>
+        <h3>Predictive Nudges</h3>
+        <p>Right message, right time, before it's too late. "Tight week ahead — pause subscriptions?" 3 days before you'd run out.</p>
+        <div class="feat-metric"><strong>3 days</strong>Early warning</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">🏷️</div>
+        <h3>Smart Categorisation</h3>
+        <p>Handles messy Nigerian bank SMS formats. Knows Jumia vs Jumia Food. Separately tracks "Black Tax" family obligations.</p>
+        <div class="feat-metric"><strong>GTB · UBA · Zenith · Access</strong></div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">🎯</div>
+        <h3>Goal-Based Micro-Saving</h3>
+        <p>Create Spaces for Emergency Fund, Rent 2026, or Detty December. Round-up rules, percent rules, payday auto-save — your way.</p>
+        <div class="feat-metric"><strong>₦50</strong>Round-up per transaction</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon-wrap">🧾</div>
+        <h3>Debt Intelligence</h3>
+        <p>Tracks Palmcredit, Carbon, esusu contributions, and the informal "I owe you." Snowball vs avalanche payoff recommendations.</p>
+        <div class="feat-metric"><strong>Formal + informal</strong>All debts tracked</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner">
+    <div class="section-kicker reveal">Early Access</div>
+    <h2 class="reveal">No more <em>gbese</em><br>days before payday.</h2>
+    <div class="city-badges reveal">
+      <div class="city-badge">🇳🇬 Lagos</div>
+      <div class="city-badge">🇳🇬 Abuja</div>
+      <div class="city-badge">🇳🇬 Port Harcourt</div>
+      <div class="city-badge">🇬🇭 Accra</div>
+      <div class="city-badge">🇰🇪 Nairobi</div>
+      <div class="city-badge">🌍 Worldwide</div>
+    </div>
+    <p class="section-body reveal" style="text-align:center;margin:0 auto 2.75rem">Join 2,400+ African professionals on the waitlist. Be among the first to experience predictive finance when we launch.</p>
+    <form class="wl-form reveal" id="wlForm">
+      <input type="email" class="wl-email" placeholder="Your email address" required id="wlEmail"/>
+      <button type="submit" class="wl-submit">Join Waitlist →</button>
+    </form>
+    <div class="wl-trust reveal">
+      <span>🔐 Bank-level security</span>
+      <span>🚫 No spam</span>
+      <span>🇳🇬 Made in Lagos</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo">
+    <div class="footer-logo-mark">₦</div>
+    <span class="footer-logo-name">Kobo</span>
+  </a>
+  <div class="footer-links">
+    <a href="#">Twitter</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Instagram</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
+  </div>
+  <p>© 2026 Kobo Finance Ltd. · Made in Lagos, built for Africa.</p>
+</footer>
+
+<script>
+  window.addEventListener('scroll',()=>{
+    document.getElementById('mainNav').classList.toggle('solid',scrollY>60);
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  document.getElementById('wlForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const b=e.target.querySelector('button');
+    b.textContent='✓ You\'re on the list!';
+    b.style.background='#2a6b35';
+    b.disabled=true;
+  });
+
+  const ci=document.getElementById('chatInput');
+  ci.addEventListener('input',()=>{ci.style.height='auto';ci.style.height=Math.min(ci.scrollHeight,120)+'px';});
+  ci.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+
+  let hist=[];
+  const SYS=`You are Kobo, an AI financial coach built specifically for young Nigerian professionals aged 22–35. You are sharp, warm, empathetic, and unpretentious — a knowledgeable friend, not a bank.
+
+Key traits:
+- You deeply understand Nigerian financial culture: black tax (supporting family), esusu (cooperative savings), aso-ebi (event clothing obligations), Detty December (festive spending season), multiple income streams, NYSC, side hustles
+- You're comfortable with Pidgin English and Naija slang. Respond in Pidgin if the user does — otherwise use warm, clear English
+- You NEVER shame people about their spending
+- Use ₦ (Naira) for all amounts
+- Responses: concise (2–3 short paragraphs), conversational, specific and actionable
+- Use emojis naturally but sparingly
+- You know: PiggyVest, Cowrywise, Kuda, Carbon, Palmcredit, Opay, Moniepoint, Mono, Flutterwave, Paystack
+- Kobo's MVP is the AI financial coach. Full app (in development) connects to Nigerian banks via Mono API to predict balance 14 days ahead with 85%+ accuracy. You don't have the user's real data in this demo
+- Typical salary range: ₦150k–₦1.5M/month
+- Common Nigerian expense categories: rent, transport, food, subscriptions (Netflix/DSTV/Spotify), data, clothing (aso-ebi), black tax, esusu, church/tithe, informal loans
+
+When someone says they're broke before payday: validate it, identify the most likely cause, give 2–3 specific steps.
+When asked if they can afford something: give a direct answer with a naira number.
+When asked to build a budget: split into needs/wants/savings practically for Lagos life.
+Be the coach that makes them move from reactive to predictive.`;
+
+  async function sendMsg(){
+    const txt=ci.value.trim(); if(!txt)return;
+    addMsg('usr',txt); ci.value=''; ci.style.height='auto';
+    hist.push({role:'user',content:txt});
+    document.getElementById('typingDots').classList.add('show');
+    document.getElementById('sendBtn').disabled=true;
+    scrollChat();
+
+    setTimeout(() => {
+      let reply = "I hear you! To give you the best advice, I'd need to look at your full transaction history. But generally, the best way to stop running out of money is to automatically save toward your fixed expenses the day your salary lands.";
+      const lowerTxt = txt.toLowerCase();
+      
+      if (lowerTxt.includes("budget") && lowerTxt.includes("350")) {
+        reply = "Okay so ₦350k. In Lagos, try this: ₦175k (50%) for fixed needs like rent/transport. ₦105k (30%) for yourself (flexing). ₦70k (20%) saved/invested immediately on payday. Would you like me to auto-save the ₦70k next payday?";
+      } else if (lowerTxt.includes("dinner")) {
+        reply = "Looking at your current trajectory, you have ₦3,400 \"safe to spend\" before your next payday. A nice dinner out is fine, but try to keep it under ₦2,500 so you're not stressed next week.";
+      } else if (lowerTxt.includes("25th") || lowerTxt.includes("run out")) {
+        reply = "The salary trap! 😩 It happens because we usually pay bills and flex first, then save whatever's left (which is usually nothing). Next month, let's reverse it. We'll secure your savings and fixed costs on Day 1.";
+      } else if (lowerTxt.includes("detty december")) {
+        reply = "Ah, Detty December! The earlier you start, the less you feel it. If we auto-save ₦25,000 every month starting now, you'll have ₦200,000 ready by November without taking loans.";
+      } else if (lowerTxt.includes("emergency") || lowerTxt.includes("lagos")) {
+        reply = "For a young professional in Lagos, aiming for 3 to 6 months of your absolute basic living expenses is key. If your bare minimum to survive is ₦150k/month, a full emergency fund is ₦450k-₦900k.";
+      } else if (lowerTxt.includes("subscription") || lowerTxt.includes("forgetting")) {
+        reply = "You're not alone! I've scanned your spending patterns and found 3 recurring charges (Netflix, Spotify, and a generic ₦4,500 charge). I can send you a WhatsApp nudge 48 hours before they renew so you can cancel them if needed. Want me to turn that on?";
+      } else if (lowerTxt.includes("family") || lowerTxt.includes("30k")) {
+        reply = "Black tax is real. Easiest fix: Treat that ₦30k like a fixed utility bill (like electricity). Set up an auto-transfer to your family's account on the exact day you get paid. You won't even see the money, so you won't plan your life around it.";
+      }
+      
+      hist.push({role:'assistant',content:reply});
+      document.getElementById('typingDots').classList.remove('show');
+      addMsg('bot',reply);
+      scrollChat();
+      document.getElementById('sendBtn').disabled=false;
+    }, 1200 + Math.random() * 800);
+  }
+
+  function usePrompt(el){ci.value=el.textContent;sendMsg();}
+
+  function addMsg(role,text){
+    const w=document.getElementById('chatMsgs');
+    const d=document.createElement('div'); d.className=`cmsg ${role}`;
+    const wh=document.createElement('div'); wh.className='cmsg-who';
+    wh.textContent=role==='bot'?'Kobo':'You';
+    const b=document.createElement('div'); b.className='cmsg-bub'; b.textContent=text;
+    d.appendChild(wh); d.appendChild(b); w.appendChild(d); scrollChat();
+  }
+
+  function scrollChat(){const w=document.getElementById('chatMsgs');w.scrollTop=w.scrollHeight;}
+</script>
+</body>
+</html>
