@@ -1,0 +1,25 @@
+/api/v1/auth/login:
+  post:
+    tags:
+    - Authentication
+    summary: Login and receive a JWT token
+    operationId: login_api_v1_auth_login_post
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserLogin'
+      required: true
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Token'
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'

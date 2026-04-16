@@ -1,0 +1,29 @@
+/api/v1/chat:
+  post:
+    tags:
+    - Chat
+    summary: Chat with Kobo AI
+    description: Ask natural language questions about your finances. Pidgin-friendly
+      and judgment-free.
+    operationId: chat_api_v1_chat_post
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChatRequest'
+      required: true
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatResponse'
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'
+    security:
+    - OAuth2PasswordBearer: []

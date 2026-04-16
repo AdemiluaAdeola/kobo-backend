@@ -1,37 +1,24 @@
-from pydantic import BaseModel, Field
-from datetime import date, datetime
-from typing import Optional
+"""Pydantic schemas for transactions."""
+from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class TransactionCreate(BaseModel):
-    type: str = Field(..., pattern="^(income|expenditure)$")
-    amount: float = Field(..., gt=0)
-    category: str = Field(..., min_length=1, max_length=80)
-    description: str = ""
-    date: Optional[date] = None
-    source: str = "manual"
-    is_recurring: bool = False
-
-
-class TransactionUpdate(BaseModel):
-    type: Optional[str] = Field(None, pattern="^(income|expenditure)$")
-    amount: Optional[float] = Field(None, gt=0)
-    category: Optional[str] = Field(None, min_length=1, max_length=80)
-    description: Optional[str] = None
-    date: Optional[date] = None
-    is_recurring: Optional[bool] = None
+    amount: float
+    description: str
+    transaction_type: str = "debit"  # debit / credit
+    transaction_date: datetime | None = None
 
 
 class TransactionResponse(BaseModel):
-    model_config = {"from_attributes": True}
-
-    id: str
-    user_id: str
-    type: str
+    id: int
     amount: float
-    category: str
     description: str
-    date: date
-    source: str
-    is_recurring: bool
+    category: str | None
+    confidence_score: float | None
+    transaction_type: str
+    transaction_date: datetime
     created_at: datetime
+
+    model_config = {"from_attributes": True}

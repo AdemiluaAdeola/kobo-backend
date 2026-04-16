@@ -1,0 +1,70 @@
+/api/v1/transactions:
+  post:
+    tags:
+    - Transactions
+    summary: Add a transaction (with auto-categorization)
+    description: Submit a transaction description (e.g. bank SMS) and Kobo will auto-categorize
+      it.
+    operationId: add_transaction_api_v1_transactions_post
+    security:
+    - OAuth2PasswordBearer: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionCreate'
+    responses:
+      '201':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionResponse'
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'
+  get:
+    tags:
+    - Transactions
+    summary: List transactions
+    operationId: list_transactions_api_v1_transactions_get
+    security:
+    - OAuth2PasswordBearer: []
+    parameters:
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        maximum: 200
+        minimum: 1
+        default: 50
+        title: Limit
+    - name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+        title: Offset
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TransactionResponse'
+              title: Response List Transactions Api V1 Transactions Get
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'

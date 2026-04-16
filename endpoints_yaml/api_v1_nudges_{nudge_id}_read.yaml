@@ -1,0 +1,28 @@
+/api/v1/nudges/{nudge_id}/read:
+  patch:
+    tags:
+    - Nudges
+    summary: Mark a nudge as read
+    operationId: mark_nudge_read_api_v1_nudges__nudge_id__read_patch
+    security:
+    - OAuth2PasswordBearer: []
+    parameters:
+    - name: nudge_id
+      in: path
+      required: true
+      schema:
+        type: integer
+        title: Nudge Id
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NudgeResponse'
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'

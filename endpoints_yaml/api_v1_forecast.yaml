@@ -1,0 +1,17 @@
+/api/v1/forecast:
+  get:
+    tags:
+    - Forecast
+    summary: Get 14-day cash flow forecast
+    description: Prophet-powered predictive cash flow. Returns daily balance predictions,
+      safe-to-spend amount, and risk alerts.
+    operationId: get_forecast_api_v1_forecast_get
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForecastResponse'
+    security:
+    - OAuth2PasswordBearer: []

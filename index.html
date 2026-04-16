@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kobo — See Tomorrow's Money Today</title>
+    <meta name="description" content="AI-powered finance coach that brings your financial future into the present. Predict, prevent, prosper.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --deep-space: #050508;
+            --nebula-purple: #1a1a2e;
+            --cosmic-blue: #16213e;
+            --electric-cyan: #00d9ff;
+            --neon-green: #00ff88;
+            --warm-gold: #ffd700;
+            --soft-white: #f0f0f5;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glow-cyan: 0 0 20px rgba(0, 217, 255, 0.5);
+            --glow-green: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--deep-space);
+            color: var(--soft-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(to bottom, rgba(5,5,8,0.8), transparent);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-space);
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(240, 240, 245, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--electric-cyan), var(--neon-green));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--soft-white);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            color: var(--deep-space);
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow-cyan);
+            border: none;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--electric-cyan);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .badge-pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: var(--glow-green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title .line-1 {
+            display: block;
+            background: linear-gradient(135deg, var(--soft-white) 0%, rgba(240,240,245,0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-title .line-2 {
+            display: block;
+            background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--neon-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(240, 240, 245, 0.7);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            color: var(--deep-space);
+            padding: 1.125rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow-cyan);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 217, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--soft-white);
+            padding: 1.125rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: var(--glow-cyan);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat {
+            position: relative;
+        }
+
+        .stat::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--glass-border), transparent);
+        }
+
+        .stat:first-child::before {
+            display: none;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(240, 240, 245, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        /* Time Travel Visualization */
+        .hero-visual {
+            position: relative;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-stream {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .stream-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--electric-cyan), var(--neon-green), transparent);
+            opacity: 0.3;
+            animation: streamFlow 8s linear infinite;
+        }
+
+        .stream-line:nth-child(1) { top: 20%; width: 80%; left: -20%; animation-delay: 0s; }
+        .stream-line:nth-child(2) { top: 40%; width: 60%; left: 20%; animation-delay: 2s; opacity: 0.2; }
+        .stream-line:nth-child(3) { top: 60%; width: 70%; left: -10%; animation-delay: 4s; }
+        .stream-line:nth-child(4) { top: 80%; width: 50%; left: 30%; animation-delay: 6s; opacity: 0.15; }
+
+        @keyframes streamFlow {
+            0% { transform: translateX(-100%); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateX(200%); opacity: 0; }
+        }
+
+        /* Glass Cards Stack */
+        .cards-stack {
+            position: relative;
+            width: 380px;
+            height: 500px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .glass-card {
+            position: absolute;
+            width: 100%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 1.75rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card.past {
+            transform: translateZ(-100px) translateY(40px) rotateY(-5deg);
+            opacity: 0.5;
+            filter: blur(2px);
+        }
+
+        .glass-card.present {
+            transform: translateZ(0) translateY(0) rotateY(0);
+            opacity: 1;
+            z-index: 3;
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 
+                0 0 40px rgba(0, 217, 255, 0.2),
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card.future {
+            transform: translateZ(-50px) translateY(-30px) rotateY(5deg);
+            opacity: 0.7;
+        }
+
+        .cards-stack:hover .glass-card.past {
+            transform: translateZ(-150px) translateX(-30px) translateY(60px) rotateY(-15deg);
+            opacity: 0.3;
+        }
+
+        .cards-stack:hover .glass-card.present {
+            transform: translateZ(50px) scale(1.05);
+        }
+
+        .cards-stack:hover .glass-card.future {
+            transform: translateZ(-20px) translateX(30px) translateY(-50px) rotateY(10deg);
+            opacity: 0.9;
+        }
+
+        .card-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(240, 240, 245, 0.5);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .past .card-label-dot { background: rgba(240, 240, 245, 0.4); }
+        .present .card-label-dot { background: var(--neon-green); box-shadow: var(--glow-green); }
+        .future .card-label-dot { background: var(--electric-cyan); box-shadow: var(--glow-cyan); }
+
+        .card-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .past .card-amount { color: rgba(240, 240, 245, 0.6); }
+        .present .card-amount { 
+            background: linear-gradient(135deg, var(--soft-white), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .future .card-amount { color: var(--electric-cyan); }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: rgba(240, 240, 245, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-chart {
+            height: 80px;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .past .chart-bar { background: rgba(240, 240, 245, 0.2); }
+        .present .chart-bar { 
+            background: linear-gradient(to top, var(--neon-green), rgba(0, 255, 136, 0.3));
+        }
+        .future .chart-bar { 
+            background: linear-gradient(to top, var(--electric-cyan), rgba(0, 217, 255, 0.3));
+        }
+
+        .chart-bar:nth-child(1) { height: 60%; }
+        .chart-bar:nth-child(2) { height: 80%; }
+        .chart-bar:nth-child(3) { height: 45%; }
+        .chart-bar:nth-child(4) { height: 90%; }
+        .chart-bar:nth-child(5) { height: 70%; }
+        .chart-bar:nth-child(6) { height: 55%; }
+        .chart-bar:nth-child(7) { height: 85%; }
+
+        .card-alert {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--warm-gold);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 5rem;
+        }
+
+        .section-eyebrow {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--electric-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: rgba(240, 240, 245, 0.7);
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card-large {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card-large::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--electric-cyan), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card-large:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card-large:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon-large {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .feature-title-large {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc-large {
+            color: rgba(240, 240, 245, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .feature-visual {
+            margin-top: 1.5rem;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 217, 255, 0.2), transparent);
+            animation: wave 4s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateY(20px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Timeline Section */
+        .timeline {
+            padding: 8rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--electric-cyan), var(--neon-green));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: auto;
+            margin-left: 0;
+            text-align: right;
+            padding-right: 3rem;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+            margin-right: 0;
+            padding-left: 3rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--deep-space);
+            border: 3px solid var(--electric-cyan);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-step {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            color: var(--electric-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-desc {
+            color: rgba(240, 240, 245, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Waitlist Section */
+        .waitlist {
+            padding: 8rem 3rem;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .waitlist-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waitlist-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .waitlist-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .waitlist-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .waitlist-title span {
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .waitlist-subtitle {
+            font-size: 1.125rem;
+            color: rgba(240, 240, 245, 0.7);
+            margin-bottom: 2.5rem;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .waitlist-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--soft-white);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .waitlist-input:focus {
+            border-color: var(--electric-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .waitlist-input::placeholder {
+            color: rgba(240, 240, 245, 0.4);
+        }
+
+        .btn-waitlist {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            color: var(--deep-space);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-waitlist:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        }
+
+        .waitlist-trust {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: rgba(240, 240, 245, 0.6);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem;
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            color: rgba(240, 240, 245, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--electric-cyan);
+        }
+
+        .footer-copy {
+            color: rgba(240, 240, 245, 0.4);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 3.5rem;
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-cta-group {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+                height: 400px;
+            }
+
+            .cards-stack {
+                transform: scale(0.85);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-line {
+                left: 2rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: calc(100% - 5rem);
+                margin-left: 5rem;
+                text-align: left;
+                padding: 1.5rem;
+            }
+
+            .timeline-dot {
+                left: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .waitlist-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .waitlist-form {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">₦</div>
+                Kobo
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#timeline" class="nav-link">How It Works</a>
+                <a href="#waitlist" class="nav-cta">Get Early Access</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-pulse"></span>
+                    AI-Powered Finance Coach
+                </div>
+                <h1 class="hero-title">
+                    <span class="line-1">See Tomorrow's</span>
+                    <span class="line-2">Money Today</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Kobo brings your financial future into the present. Predict cash flow 14 days ahead, prevent broke days before they happen, and build wealth habits that stick.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="#waitlist" class="btn-primary">
+                        Start Your Journey
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        Explore Features
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Day Forecast</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2.4k</div>
+                        <div class="stat-label">Early Adopters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="time-stream">
+                    <div class="stream-line"></div>
+                    <div class="stream-line"></div>
+                    <div class="stream-line"></div>
+                    <div class="stream-line"></div>
+                </div>
+                <div class="cards-stack">
+                    <div class="glass-card past">
+                        <div class="card-label">
+                            <span class="card-label-dot"></span>
+                            7 Days Ago
+                        </div>
+                        <div class="card-amount">₦847,500</div>
+                        <div class="card-desc">Post-payday high</div>
+                        <div class="card-chart">
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                        </div>
+                    </div>
+                    <div class="glass-card future">
+                        <div class="card-label">
+                            <span class="card-label-dot"></span>
+                            7 Days Ahead
+                        </div>
+                        <div class="card-amount">₦23,400</div>
+                        <div class="card-desc">Pre-payday low predicted</div>
+                        <div class="card-chart">
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                        </div>
+                        <div class="card-alert">
+                            <span>⚡️</span>
+                            Action recommended
+                        </div>
+                    </div>
+                    <div class="glass-card present">
+                        <div class="card-label">
+                            <span class="card-label-dot"></span>
+                            Today
+                        </div>
+                        <div class="card-amount">₦156,200</div>
+                        <div class="card-desc">Safe to spend: ₦12,400</div>
+                        <div class="card-chart">
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                            <div class="chart-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <p class="section-eyebrow">The Future of Finance</p>
+                <h2 class="section-title">
+                    Predict. Prevent. <span>Prosper.</span>
+                </h2>
+                <p class="section-subtitle">
+                    Not just tracking—time travel for your wallet. Kobo's AI sees patterns humans miss and acts before problems arise.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card-large">
+                    <div class="feature-icon-large">🔮</div>
+                    <h3 class="feature-title-large">Predictive Cash Flow</h3>
+                    <p class="feature-desc-large">
+                        Prophet-powered forecasting that understands Nigerian salary cycles, weekend spending spikes, and seasonal patterns. Know your balance 14 days before it happens.
+                    </p>
+                    <div class="feature-visual">
+                        <div class="wave-animation"></div>
+                    </div>
+                </div>
+                <div class="feature-card-large">
+                    <div class="feature-icon-large">🤖</div>
+                    <h3 class="feature-title-large">Conversational AI</h3>
+                    <p class="feature-desc-large">
+                        Chat naturally about your money. "Can I afford dinner out?" gets a real answer based on your forecast, not generic advice. Pidgin-friendly and judgment-free.
+                    </p>
+                    <div class="feature-visual" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <span style="background: var(--glass-bg); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem;">Can I buy new shoes?</span>
+                        <span style="color: var(--electric-cyan);">→</span>
+                        <span style="background: linear-gradient(135deg, var(--electric-cyan), var(--neon-green)); color: var(--deep-space); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Wait 3 days, save ₦15k</span>
+                    </div>
+                </div>
+                <div class="feature-card-large">
+                    <div class="feature-icon-large">⚡️</div>
+                    <h3 class="feature-title-large">Smart Nudges</h3>
+                    <p class="feature-desc-large">
+                        Context-aware notifications that actually help. "You just got paid—auto-save 10%?" Not "You spent too much" after the fact. Right message, right time.
+                    </p>
+                    <div class="feature-visual" style="padding: 1rem;">
+                        <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 1.5rem;">💰</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.9rem; color: var(--warm-gold);">Payday detected!</div>
+                                <div style="font-size: 0.8rem; color: rgba(240,240,245,0.7);">Save ₦45,000 before you spend?</div>
+                            </div>
+                            <button style="margin-left: auto; background: var(--warm-gold); color: var(--deep-space); border: none; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer;">Do it</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card-large">
+                    <div class="feature-icon-large">🧠</div>
+                    <h3 class="feature-title-large">Auto-Categorization</h3>
+                    <p class="feature-desc-large">
+                        Works with messy Nigerian bank SMS. Knows Jumia from Jumia Food, Bolt from Uber. Learns your patterns and gets smarter with every transaction.
+                    </p>
+                    <div class="feature-visual" style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                            <span style="color: rgba(240,240,245,0.6);">"POS PURCHASE JUMIA FOO..."</span>
+                            <span style="background: var(--neon-green); color: var(--deep-space); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Food • 94% confidence</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                            <span style="color: rgba(240,240,245,0.6);">"TRANSFER TO OLAOLUWA..."</span>
+                            <span style="background: var(--electric-cyan); color: var(--deep-space); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Transfer • 89% confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="section-container">
+            <div class="section-header">
+                <p class="section-eyebrow">Your Journey</p>
+                <h2 class="section-title">
+                    From Reactive to <span>Predictive</span>
+                </h2>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 01</div>
+                        <h3 class="timeline-title">Connect Your Money</h3>
+                        <p class="timeline-desc">
+                            Link accounts via Mono or forward SMS. Kobo ingests 90 days of history in seconds, learning your unique income rhythm and spending DNA.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 02</div>
+                        <h3 class="timeline-title">See Your Timeline</h3>
+                        <p class="timeline-desc">
+                            Your personal cash flow forecast appears. Watch as past patterns reveal future balances—finally understand why you're always broke by the 25th.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 03</div>
+                        <h3 class="timeline-title">Act Before It Happens</h3>
+                        <p class="timeline-desc">
+                            Predictive nudges change your behavior. Auto-save rules trigger on payday. Debt paydown optimizes itself. You stop reacting and start planning.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section class="waitlist" id="waitlist">
+        <div class="waitlist-container">
+            <div class="waitlist-content">
+                <h2 class="waitlist-title">
+                    The Future is <span>Waiting</span>
+                </h2>
+                <p class="waitlist-subtitle">
+                    Join 2,400+ Nigerians who refuse to be surprised by their own bank balance. Be first to experience predictive finance.
+                </p>
+                <form class="waitlist-form" onsubmit="event.preventDefault(); this.innerHTML='<div style=\'color: var(--neon-green); font-weight: 600;\'>✓ You\'re on the list! We\'ll be in touch.</div>';">
+                    <input type="email" class="waitlist-input" placeholder="Enter your email" required>
+                    <button type="submit" class="btn-waitlist">Get Early Access</button>
+                </form>
+                <div class="waitlist-trust">
+                    <div class="trust-item">
+                        <span>🔐</span>
+                        <span>Bank-level security</span>
+                    </div>
+                    <div class="trust-item">
+                        <span>🚫</span>
+                        <span>No spam, ever</span>
+                    </div>
+                    <div class="trust-item">
+                        <span>🇳🇬</span>
+                        <span>Made in Lagos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="#" class="footer-logo">Kobo</a>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Twitter</a>
+                <a href="#" class="footer-link">LinkedIn</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 Kobo Finance. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Particle Canvas Animation
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.life = 0;
+                this.maxLife = Math.random() * 200 + 100;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life++;
+
+                if (this.life > this.maxLife || this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
+                gradient.addColorStop(0, `rgba(0, 217, 255, ${this.opacity})`);
+                gradient.addColorStop(0.5, `rgba(0, 255, 136, ${this.opacity * 0.5})`);
+                gradient.addColorStop(1, 'transparent');
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        // Draw connections
+        function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        const opacity = (1 - distance / 150) * 0.2;
+                        ctx.strokeStyle = `rgba(0, 217, 255, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            drawConnections();
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Nav background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(5, 5, 8, 0.9)';
+            } else {
+                nav.style.background = 'linear-gradient(to bottom, rgba(5,5,8,0.8), transparent)';
+            }
+        });
+    </script>
+</body>
+</html>

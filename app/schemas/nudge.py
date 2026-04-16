@@ -1,15 +1,14 @@
+"""Pydantic schemas for smart nudges."""
+from datetime import datetime
+
 from pydantic import BaseModel
-from datetime import date, datetime
-from typing import Optional
 
 
 class NudgeResponse(BaseModel):
-    model_config = {"from_attributes": True}
-
-    id: str
-    user_id: str
-    type: str
+    id: int
     message: str
+    nudge_type: str
     is_read: bool
-    trigger_date: Optional[date] = None
     created_at: datetime
+
+    model_config = {"from_attributes": True}

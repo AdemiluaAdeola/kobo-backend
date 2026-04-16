@@ -1,0 +1,15 @@
+/api/v1/users/me:
+  get:
+    tags:
+    - Users
+    summary: Get current user profile
+    operationId: get_me_api_v1_users_me_get
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserResponse'
+    security:
+    - OAuth2PasswordBearer: []

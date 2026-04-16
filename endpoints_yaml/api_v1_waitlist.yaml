@@ -1,0 +1,26 @@
+/api/v1/waitlist:
+  post:
+    tags:
+    - Waitlist
+    summary: Join the waitlist
+    description: Submit your email to join the Kobo early access waitlist.
+    operationId: join_waitlist_api_v1_waitlist_post
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WaitlistCreate'
+      required: true
+    responses:
+      '201':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaitlistResponse'
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'

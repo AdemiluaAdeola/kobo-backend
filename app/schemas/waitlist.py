@@ -1,16 +1,17 @@
-from pydantic import BaseModel, EmailStr
+"""Pydantic schemas for waitlist."""
 from datetime import datetime
+
+from pydantic import BaseModel, EmailStr
 
 
 class WaitlistCreate(BaseModel):
     email: EmailStr
-    city: str = ""
 
 
 class WaitlistResponse(BaseModel):
-    model_config = {"from_attributes": True}
-
-    id: str
+    id: int
     email: str
-    city: str
     created_at: datetime
+    message: str = "You're on the list! We'll be in touch."
+
+    model_config = {"from_attributes": True}

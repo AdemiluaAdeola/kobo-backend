@@ -1,30 +1,22 @@
-import uuid
-from datetime import datetime, date, timezone
-from typing import Optional
+"""
+Nudge model — stores smart financial notifications for users.
+"""
+from datetime import datetime, timezone
 
-from sqlalchemy import String, Boolean, Date, DateTime, ForeignKey, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database import Base
+from ..core.database import Base
 
 
 class Nudge(Base):
-    """Proactive financial nudge — subscription alert, tight-week warning, payday save."""
     __tablename__ = "nudges"
 
-    id: Mapped[str] = mapped_column(
-        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
-    )
-    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    type: Mapped[str] = mapped_column(String(30))  # "subscription_renewal" | "tight_week" | "payday_save" | "general"
-    message: Mapped[str] = mapped_column(Text)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    message: Mapped[str] = mapped_column(Text, nullable=False)
+    nudge_type: Mapped[str] = mapped_column(String(50), nullable=False)  # payday, warning, savings, tip
     is_read: Mapped[bool] = mapped_column(Boolean, default=False)
-    trigger_date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
-
-    user = relationship("User", back_populates="nudges")
-
-    def __repr__(self):
-        return f"<Nudge [{self.type}] read={self.is_read}>"

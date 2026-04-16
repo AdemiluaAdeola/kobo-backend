@@ -1,0 +1,45 @@
+/api/v1/nudges:
+  get:
+    tags:
+    - Nudges
+    summary: Get smart nudges
+    description: "Context-aware financial notifications. 'You just got paid\u2014\
+      auto-save 10%?' Right message, right time."
+    operationId: get_nudges_api_v1_nudges_get
+    security:
+    - OAuth2PasswordBearer: []
+    parameters:
+    - name: unread_only
+      in: query
+      required: false
+      schema:
+        type: boolean
+        description: Only return unread nudges
+        default: false
+        title: Unread Only
+      description: Only return unread nudges
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+        title: Limit
+    responses:
+      '200':
+        description: Successful Response
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/NudgeResponse'
+              title: Response Get Nudges Api V1 Nudges Get
+      '422':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HTTPValidationError'
